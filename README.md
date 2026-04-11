@@ -1,3 +1,7 @@
+👤 Author Krunal Sawarkar
+
+Email: [krunalsawarkar2004@gmail.com]
+
 # ShopSphere
 
 ShopSphere is a portfolio-grade full-stack e-commerce platform built with a vanilla JavaScript frontend, Tailwind CSS, Node.js, Express, MongoDB, JWT authentication, and Stripe Checkout. It goes beyond a basic store UI and demonstrates real product thinking: customer journeys, admin operations, order lifecycle control, analytics, saved addresses, payment handling, and responsive design.
