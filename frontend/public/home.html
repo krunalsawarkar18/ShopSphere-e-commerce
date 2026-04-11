@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shop | ShopSphere</title>
+    <link rel="stylesheet" href="/assets/css/styles.css" />
+  </head>
+  <body>
+    <div data-header></div>
+    <main class="shell py-3 sm:py-5">
+      <section class="promo-card p-5 sm:p-8">
+        <div class="grid gap-5 lg:grid-cols-[1.15fr_0.85fr] lg:items-end">
+          <div>
+            <h1 class="mt-2 text-3xl leading-tight sm:mt-5 sm:text-5xl">Find your next pick.</h1>
+          </div>
+          <form id="search-form" class="grid gap-3 sm:grid-cols-[1fr_auto]">
+            <input class="field" id="search-input" name="search" type="search" placeholder="Search products" />
+            <button class="btn-primary w-full sm:w-auto" type="submit">Search</button>
+          </form>
+        </div>
+        <div class="mt-6 flex flex-wrap gap-3">
+          <select class="field w-full max-w-full sm:max-w-xs" id="category-filter" name="category">
+            <option value="">All categories</option>
+          </select>
+          <div class="ghost-tag" id="product-count"></div>
+        </div>
+        <p id="page-message" class="mt-5 hidden rounded-2xl px-4 py-3 text-sm"></p>
+      </section>
+
+      <section class="section-surface mt-8">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Products</p>
+            <h2 class="mt-2 text-2xl sm:text-3xl">Popular now</h2>
+          </div>
+        </div>
+        <div id="product-grid" class="market-grid mt-6"></div>
+      </section>
+    </main>
+    <div data-footer></div>
+    <script type="module" src="/assets/js/pages/home.js"></script>
+  </body>
+</html>

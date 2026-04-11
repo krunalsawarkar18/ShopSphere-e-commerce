@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login | ShopSphere</title>
+    <link rel="stylesheet" href="/assets/css/styles.css" />
+  </head>
+  <body>
+    <div data-header></div>
+    <main class="shell flex min-h-[76vh] items-center justify-center py-5 sm:py-10">
+      <section class="w-full max-w-3xl">
+        <article class="rounded-[30px] border border-[#d8d0c4] bg-[linear-gradient(180deg,#f7f1e8_0%,#efe7dc_100%)] p-4 shadow-[0_24px_60px_rgba(16,24,38,0.10)] sm:rounded-[34px] sm:p-8" style="box-shadow:0 26px 70px rgba(16,24,38,0.12), inset 0 1px 0 rgba(255,250,244,0.65);">
+          <div class="rounded-[24px] border border-[#ddd5c9] bg-[linear-gradient(135deg,#ece3d6_0%,#e6ddd1_100%)] px-5 py-6 sm:rounded-[30px] sm:px-7 sm:py-8">
+            <span class="inline-flex items-center rounded-full bg-[rgba(233,240,231,0.92)] px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-[#14532d] sm:px-5 sm:text-sm">Welcome back</span>
+          </div>
+
+          <form id="login-form" class="mt-6 space-y-4 sm:mt-8 sm:space-y-5">
+            <div>
+              <input class="field !rounded-[22px] !border-[#d7cec1] !bg-[#f8f2e9] !px-4 !py-3.5 !text-base placeholder:!text-[#8e958f] sm:!rounded-[24px] sm:!px-5 sm:!py-4 sm:!text-lg" id="email" name="email" type="email" placeholder="Email address" required />
+            </div>
+            <div>
+              <input class="field !rounded-[22px] !border-[#d7cec1] !bg-[#f8f2e9] !px-4 !py-3.5 !text-base placeholder:!text-[#8e958f] sm:!rounded-[24px] sm:!px-5 sm:!py-4 sm:!text-lg" id="password" name="password" type="password" placeholder="Password" required />
+            </div>
+            <p id="form-message" class="hidden rounded-2xl px-4 py-3 text-sm"></p>
+            <button class="w-full rounded-full px-6 py-3.5 text-lg font-semibold text-white transition hover:-translate-y-0.5 sm:py-4 sm:text-xl" style="background:linear-gradient(180deg,#14532d 0%,#0f4634 100%); box-shadow:0 24px 46px rgba(20,83,45,0.28);" type="submit">Login</button>
+          </form>
+
+          <div class="mt-6 space-y-3 px-1 text-base sm:mt-8 sm:space-y-4 sm:text-lg">
+            <p class="leading-7 text-[#475569]">
+              New here?
+              <a class="font-semibold text-[#c46a3c] transition hover:text-[#ad5b32]" href="/signup.html">Create an account</a>
+            </p>
+            <p class="leading-7 text-[#475569]">
+              Need inventory access?
+              <a class="font-semibold text-[#14532d] transition hover:text-[#0f4634]" href="/admin-login.html">Open the admin portal</a>
+            </p>
+          </div>
+        </article>
+      </section>
+    </main>
+    <div data-footer></div>
+    <script type="module" src="/assets/js/pages/login.js"></script>
+  </body>
+</html>

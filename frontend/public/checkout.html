@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Checkout | ShopSphere</title>
+    <link rel="stylesheet" href="/assets/css/styles.css" />
+  </head>
+  <body>
+    <div data-header></div>
+    <main class="shell py-6 sm:py-10">
+      <section class="promo-card p-6 sm:p-8">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Checkout</p>
+            <h1 class="mt-2 text-3xl sm:text-5xl">Delivery details</h1>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <span class="ghost-tag">Address</span>
+            <span class="ghost-tag">Payment</span>
+            <span class="ghost-tag">Confirm</span>
+          </div>
+        </div>
+      </section>
+      <p id="page-message" class="mb-5 mt-6 hidden rounded-2xl px-4 py-3 text-sm"></p>
+      <section class="mt-6 grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
+        <form id="checkout-form" class="summary-card p-6 sm:p-8">
+          <div class="grid gap-4 sm:grid-cols-2">
+            <div class="sm:col-span-2">
+              <label class="mb-2 block text-sm font-medium" for="fullName">Full name</label>
+              <input class="field" id="fullName" name="fullName" required />
+            </div>
+            <div>
+              <label class="mb-2 block text-sm font-medium" for="phone">Phone</label>
+              <input class="field" id="phone" name="phone" required />
+            </div>
+            <div>
+              <label class="mb-2 block text-sm font-medium" for="country">Country</label>
+              <input class="field" id="country" name="country" value="India" required />
+            </div>
+            <div class="sm:col-span-2">
+              <label class="mb-2 block text-sm font-medium" for="line1">Address line 1</label>
+              <input class="field" id="line1" name="line1" required />
+            </div>
+            <div class="sm:col-span-2">
+              <label class="mb-2 block text-sm font-medium" for="line2">Address line 2</label>
+              <input class="field" id="line2" name="line2" />
+            </div>
+            <div>
+              <label class="mb-2 block text-sm font-medium" for="city">City</label>
+              <input class="field" id="city" name="city" required />
+            </div>
+            <div>
+              <label class="mb-2 block text-sm font-medium" for="state">State</label>
+              <input class="field" id="state" name="state" required />
+            </div>
+            <div>
+              <label class="mb-2 block text-sm font-medium" for="postalCode">Postal code</label>
+              <input class="field" id="postalCode" name="postalCode" required />
+            </div>
+            <div>
+              <label class="mb-2 block text-sm font-medium" for="paymentMethod">Payment</label>
+              <select class="field" id="paymentMethod" name="paymentMethod">
+                <option>Cash on Delivery</option>
+                <option>Pay Online</option>
+              </select>
+            </div>
+          </div>
+          <p class="mt-4 text-sm text-slate">Choose <span class="font-semibold text-ink">Pay Online</span> to complete a secure Stripe-hosted checkout.</p>
+          <button id="checkout-submit" class="btn-primary mt-8 w-full" type="submit">Place order</button>
+        </form>
+        <aside id="checkout-summary" class="summary-card h-fit"></aside>
+      </section>
+    </main>
+    <div data-footer></div>
+    <script type="module" src="/assets/js/pages/checkout.js"></script>
+  </body>
+</html>

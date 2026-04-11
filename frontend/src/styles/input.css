@@ -1,0 +1,279 @@
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply border-mist/80;
+  }
+
+  body {
+    @apply bg-canvas text-ink font-body;
+    background-image:
+      radial-gradient(circle at 0% 0%, rgba(20, 83, 45, 0.08), transparent 26%),
+      radial-gradient(circle at 100% 12%, rgba(196, 106, 60, 0.12), transparent 18%),
+      linear-gradient(180deg, #faf6ef 0%, #f1ece3 100%);
+    min-height: 100vh;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-heading tracking-tight;
+  }
+
+  p {
+    @apply text-slate;
+  }
+
+  ::selection {
+    @apply bg-sky/30 text-ink;
+  }
+}
+
+@layer components {
+  .shell {
+    @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+
+  .card {
+    @apply rounded-[32px] border border-[#ddd6ca] backdrop-blur-xl;
+    box-shadow:
+      0 22px 55px rgba(16, 24, 38, 0.1),
+      inset 0 1px 0 rgba(255, 250, 244, 0.8);
+    background-color: rgba(255, 250, 244, 0.94);
+  }
+
+  .card-dark {
+    @apply rounded-[32px] border border-white/5 bg-ink text-white shadow-soft;
+    background-image:
+      radial-gradient(circle at top right, rgba(39, 25, 255, 0.28), transparent 32%),
+      radial-gradient(circle at bottom left, rgba(219, 78, 42, 0.18), transparent 24%),
+      linear-gradient(145deg, rgba(11, 12, 13, 0.98), rgba(25, 27, 31, 0.94));
+  }
+
+  .panel-soft {
+    @apply rounded-[28px] border border-[#d9d3c7] bg-[#fffaf4] backdrop-blur;
+    box-shadow:
+      0 20px 46px rgba(16, 24, 38, 0.1),
+      inset 0 1px 0 rgba(255, 250, 244, 0.82);
+    background-color: rgba(255, 250, 244, 0.92);
+  }
+
+  .metric-card {
+    @apply rounded-[26px] border border-[#dcd4c8] bg-[#f7f2e9] p-5 shadow-soft backdrop-blur;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center rounded-full bg-sky px-5 py-3 text-sm font-semibold text-white shadow-glow transition duration-200 hover:-translate-y-0.5 hover:bg-[#0f4634];
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center rounded-full border border-[#d3ccc0] bg-[#fffaf4] px-5 py-3 text-sm font-semibold text-ink transition duration-200 hover:-translate-y-0.5 hover:border-sky/35 hover:bg-[#f5efe6];
+  }
+
+  .field {
+    @apply w-full rounded-2xl border border-[#d4ccbf] bg-[#fffaf4] px-4 py-3 text-sm font-medium text-ink outline-none transition focus:border-sky focus:ring-4 focus:ring-sky/10;
+    box-shadow: inset 0 1px 0 rgba(255, 250, 244, 0.85);
+  }
+
+  .pill {
+    @apply inline-flex items-center rounded-full border border-[#d8d0c3] bg-[#fffaf4] px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.22em] text-slate;
+  }
+
+  .eyebrow {
+    @apply text-[11px] font-semibold uppercase tracking-[0.28em] text-slate/70;
+  }
+
+  .status-dot {
+    @apply inline-block h-2.5 w-2.5 rounded-full bg-sky;
+  }
+
+  .dashboard-shell {
+    @apply rounded-[34px] border border-[#d7cfc2] bg-[#fffaf4] p-5;
+    box-shadow:
+      0 22px 52px rgba(16, 24, 38, 0.09),
+      inset 0 1px 0 rgba(255, 250, 244, 0.82);
+  }
+
+  .dashboard-tile {
+    @apply rounded-[28px] border border-[#ddd4c8] bg-[#f6f0e7] p-5;
+    box-shadow:
+      0 16px 34px rgba(16, 24, 38, 0.06),
+      inset 0 1px 0 rgba(255, 250, 244, 0.76);
+  }
+
+  .summary-card {
+    @apply rounded-[30px] border border-[#d9d1c5] bg-[#fffaf4] p-6;
+    box-shadow:
+      0 20px 48px rgba(16, 24, 38, 0.1),
+      inset 0 1px 0 rgba(255, 250, 244, 0.82);
+  }
+
+  .subtle-grid {
+    background-image:
+      linear-gradient(rgba(20, 83, 45, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(20, 83, 45, 0.05) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+
+  .accent-badge {
+    @apply inline-flex items-center rounded-full bg-apricot px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.22em] text-white;
+  }
+
+  .section-head {
+    @apply flex items-center justify-between gap-4;
+  }
+
+  .chip-link {
+    @apply inline-flex items-center rounded-full border border-[#d8d0c4] bg-[#fffaf4] px-4 py-2 text-sm font-semibold text-slate transition hover:border-sky/30 hover:text-sky;
+  }
+
+  .top-strip {
+    @apply rounded-[24px] border border-[#ddd5c9] bg-[#fffaf4] px-4 py-3 shadow-soft backdrop-blur;
+    background-color: rgba(255, 250, 244, 0.86);
+  }
+
+  .promo-card {
+    @apply rounded-[32px] border border-[#ddd5c9] bg-[#fffaf4] p-6;
+    box-shadow:
+      0 22px 52px rgba(16, 24, 38, 0.09),
+      inset 0 1px 0 rgba(255, 250, 244, 0.82);
+  }
+
+  .promo-dark {
+    @apply rounded-[32px] border border-[#111215] bg-ink text-white shadow-soft;
+    background-image:
+      radial-gradient(circle at top right, rgba(39, 25, 255, 0.28), transparent 34%),
+      linear-gradient(145deg, rgba(11, 12, 13, 0.99), rgba(31, 36, 48, 0.95));
+  }
+
+  .product-card {
+    @apply overflow-hidden rounded-[28px] border border-[#ddd6cb] bg-[#fffaf4] transition duration-200 hover:-translate-y-1;
+    box-shadow:
+      0 18px 42px rgba(16, 24, 38, 0.08),
+      inset 0 1px 0 rgba(255, 250, 244, 0.82);
+  }
+
+  .product-image-wrap {
+    @apply relative overflow-hidden rounded-[24px] bg-[#f3ede4];
+  }
+
+  .price-tag {
+    @apply inline-flex items-center rounded-full bg-ink px-4 py-2 text-sm font-semibold text-white;
+  }
+
+  .ghost-tag {
+    @apply inline-flex items-center rounded-full bg-[#eee7dc] px-3 py-1.5 text-xs font-semibold text-slate transition;
+  }
+
+  .mini-stat {
+    @apply rounded-[22px] bg-[#f4eee4] px-4 py-4;
+  }
+
+  .auth-switch {
+    @apply inline-flex rounded-full border border-[#d8d0c3] bg-[#f2ece2] p-1.5;
+  }
+
+  .auth-switch-link {
+    @apply inline-flex min-w-[122px] items-center justify-center rounded-full px-5 py-3 text-base font-semibold text-slate transition;
+  }
+
+  .auth-switch-link.is-active {
+    @apply bg-sky text-white shadow-glow;
+  }
+
+  .market-grid {
+    @apply grid grid-cols-2 gap-3 sm:gap-5 xl:grid-cols-4;
+  }
+
+  .section-surface {
+    @apply rounded-[32px] border border-[#ddd5c9] p-6 backdrop-blur sm:p-8;
+    box-shadow:
+      0 22px 54px rgba(16, 24, 38, 0.09),
+      inset 0 1px 0 rgba(255, 250, 244, 0.84);
+    background-color: rgba(255, 250, 244, 0.9);
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+@media (max-width: 640px) {
+  body {
+    background-image:
+      radial-gradient(circle at 0% 0%, rgba(20, 83, 45, 0.06), transparent 26%),
+      radial-gradient(circle at 100% 10%, rgba(196, 106, 60, 0.08), transparent 18%),
+      linear-gradient(180deg, #faf6ef 0%, #f3eee6 100%);
+  }
+
+  .shell {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .card,
+  .card-dark,
+  .panel-soft,
+  .promo-card,
+  .summary-card,
+  .section-surface,
+  .dashboard-shell,
+  .dashboard-tile,
+  .product-card,
+  .metric-card {
+    border-radius: 24px;
+  }
+
+  .section-head {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .top-strip,
+  .promo-card,
+  .section-surface,
+  .summary-card,
+  .dashboard-shell,
+  .dashboard-tile {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .auth-switch {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .auth-switch-link {
+    min-width: 0;
+    width: 100%;
+    padding-left: 16px;
+    padding-right: 16px;
+    font-size: 0.95rem;
+  }
+}

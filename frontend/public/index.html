@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ShopSphere | Everyday picks</title>
+    <link rel="stylesheet" href="/assets/css/styles.css" />
+  </head>
+  <body>
+    <div data-header></div>
+    <main class="shell py-3 sm:py-5">
+      <section class="grid gap-5">
+        <article class="promo-card overflow-hidden p-3 sm:p-4">
+          <div id="promo-banner" class="relative overflow-hidden rounded-[28px]"></div>
+        </article>
+
+        <article class="hidden promo-card p-4 sm:block sm:p-6">
+          <div class="rounded-[28px] border border-[#d9d0c4] bg-[rgba(255,250,244,0.72)] p-4 sm:p-5">
+            <div class="flex flex-col gap-4">
+              <div class="flex flex-col gap-3 lg:flex-row lg:items-center">
+                <div class="min-w-0 flex-1">
+                  <form action="/home.html" class="grid gap-3 sm:grid-cols-[1fr_auto]">
+                    <label class="relative block">
+                      <span class="pointer-events-none absolute left-4 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-[#efe7dc] text-slate/70">
+                        <svg aria-hidden="true" viewBox="0 0 24 24" class="h-5 w-5 fill-none stroke-current" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                          <circle cx="11" cy="11" r="7"></circle>
+                          <path d="m20 20-3.5-3.5"></path>
+                        </svg>
+                      </span>
+                      <input class="field !rounded-full !bg-[#f8f2e9] !py-5 !pl-20 !pr-6 !text-base" name="search" type="search" placeholder="Search for fashion, beauty, tech..." />
+                    </label>
+                    <button class="btn-primary !w-full !px-6 !py-4 !text-base sm:!w-auto sm:!px-8 sm:!py-5" type="submit">Search</button>
+                  </form>
+                </div>
+                <a class="chip-link w-full justify-center sm:w-auto sm:self-start lg:self-end" href="/home.html">Browse all products</a>
+              </div>
+
+              <div class="rounded-[24px] bg-[rgba(244,236,226,0.82)] px-4 py-4">
+                <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                  <p class="text-sm font-semibold uppercase tracking-[0.2em] text-slate/70">Top categories</p>
+                  <a class="text-sm font-semibold text-sky transition hover:text-[#0f4634]" href="/home.html">View Categories</a>
+                </div>
+                <div id="front-categories-desktop" class="mt-4 flex flex-wrap gap-3"></div>
+              </div>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section class="section-surface mt-8 sm:mt-10">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow sm:hidden">Popular products</p>
+            <p class="eyebrow hidden sm:block">Featured</p>
+            <h2 class="mt-2 text-2xl sm:text-3xl">
+              <span class="sm:hidden">Popular Products</span>
+              <span class="hidden sm:inline">Top picks for you</span>
+            </h2>
+          </div>
+          <a class="chip-link w-full justify-center sm:w-auto" href="/home.html">View all</a>
+        </div>
+        <p id="front-message" class="mt-5 hidden rounded-2xl px-4 py-3 text-sm"></p>
+        <div id="front-featured" class="market-grid mt-6"></div>
+      </section>
+
+      <section class="section-surface mt-8 sm:mt-10">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow sm:hidden">Shop more</p>
+            <p class="eyebrow hidden sm:block">More to explore</p>
+            <h2 class="mt-2 text-2xl sm:text-3xl">
+              <span class="sm:hidden">Browse by category</span>
+              <span class="hidden sm:inline">Fresh arrivals</span>
+            </h2>
+          </div>
+          <a class="chip-link w-full justify-center sm:w-auto" href="/home.html">View Categories</a>
+        </div>
+        <div id="front-categories" class="no-scrollbar mt-6 flex gap-3 overflow-x-auto pb-1 sm:flex-wrap sm:overflow-visible"></div>
+        <div id="front-fresh" class="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-2 sm:gap-4 xl:grid-cols-4"></div>
+      </section>
+    </main>
+    <div data-footer></div>
+    <script type="module" src="/assets/js/pages/index.js"></script>
+  </body>
+</html>

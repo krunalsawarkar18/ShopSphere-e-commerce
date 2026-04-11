@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create account | ShopSphere</title>
+    <link rel="stylesheet" href="/assets/css/styles.css" />
+  </head>
+  <body>
+    <div data-header></div>
+    <main class="shell flex min-h-[75vh] items-center justify-center py-6 sm:py-10">
+      <section class="w-full max-w-2xl">
+        <article class="promo-card p-5 sm:p-10">
+          <div class="auth-switch mb-8">
+            <a class="auth-switch-link" href="/login.html">Login</a>
+            <a class="auth-switch-link is-active" href="/signup.html">Sign up</a>
+          </div>
+          <h2 class="text-2xl sm:text-3xl">Join now</h2>
+          <form id="signup-form" class="mt-8 space-y-4">
+            <div>
+              <label class="mb-2 block text-sm font-medium" for="name">Full name</label>
+              <input class="field" id="name" name="name" type="text" placeholder="Krunal Patel" required />
+            </div>
+            <div>
+              <label class="mb-2 block text-sm font-medium" for="email">Email</label>
+              <input class="field" id="email" name="email" type="email" placeholder="you@example.com" required />
+            </div>
+            <div>
+              <label class="mb-2 block text-sm font-medium" for="password">Password</label>
+              <input class="field" id="password" name="password" type="password" placeholder="Minimum 6 characters" required />
+            </div>
+            <p id="form-message" class="hidden rounded-2xl px-4 py-3 text-sm"></p>
+            <button class="btn-primary w-full" type="submit">Create account</button>
+          </form>
+        </article>
+      </section>
+    </main>
+    <div data-footer></div>
+    <script type="module" src="/assets/js/pages/signup.js"></script>
+  </body>
+</html>

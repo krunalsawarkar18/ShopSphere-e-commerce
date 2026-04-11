@@ -1,0 +1,21 @@
+{
+  "name": "shopsphere-backend",
+  "version": "1.0.0",
+  "description": "Express and MongoDB backend for ShopSphere.",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "seed": "node src/seed.js",
+    "migrate:mongo": "node src/migrateLocalToMongo.js"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.10.1",
+    "stripe": "^22.0.1"
+  }
+}

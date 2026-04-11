@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Panel | ShopSphere</title>
+    <link rel="stylesheet" href="/assets/css/styles.css" />
+  </head>
+  <body>
+    <div data-header></div>
+    <main class="shell py-4 sm:py-6">
+      <section class="promo-card p-4 sm:p-8">
+        <div class="grid gap-5 lg:grid-cols-[1.05fr_0.95fr] lg:items-end">
+          <div>
+            <p class="eyebrow">Admin panel</p>
+            <h1 class="mt-3 text-2xl sm:text-5xl">Store control center.</h1>
+            <p class="mt-3 max-w-2xl text-sm leading-7 text-slate sm:mt-4 sm:text-base sm:leading-8">
+              A simple admin-style dashboard to review inventory health, category mix, and the latest products in the catalog.
+            </p>
+          </div>
+          <div class="grid gap-4">
+            <a class="btn-primary w-full text-center sm:w-auto" href="/home.html">View store</a>
+          </div>
+        </div>
+      </section>
+
+      <p id="admin-message" class="mt-4 hidden rounded-2xl px-4 py-3 text-sm"></p>
+
+      <section id="admin-auth-gate" class="mt-5 section-surface hidden">
+        <div class="grid gap-4 xl:grid-cols-[1fr_0.95fr] xl:items-start">
+          <div>
+            <p class="eyebrow">Admin access</p>
+            <h2 class="mt-2 text-2xl sm:text-3xl">Sign in as admin to manage products.</h2>
+            <p class="mt-3 max-w-2xl text-sm leading-7 text-slate sm:mt-4 sm:text-base sm:leading-8">
+              This panel supports admin signup, admin login, and protected product add, update, and remove actions.
+            </p>
+          </div>
+          <div class="grid gap-4 sm:grid-cols-3 xl:grid-cols-1">
+            <article class="dashboard-tile">
+              <p class="eyebrow">Catalog</p>
+              <p class="mt-3 text-lg font-semibold text-ink">Product editor</p>
+              <p class="mt-2 text-sm leading-7 text-slate">Create new listings, update images, and keep stock values current.</p>
+            </article>
+            <article class="dashboard-tile">
+              <p class="eyebrow">Insights</p>
+              <p class="mt-3 text-lg font-semibold text-ink">Category performance</p>
+              <p class="mt-2 text-sm leading-7 text-slate">Spot strong categories quickly and track where the catalog is growing.</p>
+            </article>
+            <article class="dashboard-tile">
+              <p class="eyebrow">Alerts</p>
+              <p class="mt-3 text-lg font-semibold text-ink">Low-stock watch</p>
+              <p class="mt-2 text-sm leading-7 text-slate">See which items need restocking before they drop out of the storefront.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <div id="admin-dashboard" class="hidden">
+        <section id="admin-metrics" class="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-4"></section>
+
+        <section class="mt-5 grid items-start gap-4 xl:grid-cols-[1.16fr_0.84fr]">
+          <article class="section-surface">
+            <div class="section-head">
+              <div>
+                <p class="eyebrow">Analytics</p>
+                <h2 class="mt-2 text-2xl sm:text-3xl">Revenue dashboard</h2>
+              </div>
+              <span class="accent-badge">Live sales</span>
+            </div>
+            <div id="admin-analytics" class="mt-6"></div>
+          </article>
+
+          <div class="space-y-4">
+            <article class="section-surface">
+              <div class="section-head">
+                <div>
+                  <p class="eyebrow">Recent orders</p>
+                  <h2 class="mt-2 text-2xl sm:text-3xl">Latest checkouts</h2>
+                </div>
+              </div>
+              <div id="admin-recent-orders" class="mt-6 space-y-4"></div>
+            </article>
+
+            <article class="section-surface">
+              <div class="section-head">
+                <div>
+                  <p class="eyebrow">Top sellers</p>
+                  <h2 class="mt-2 text-2xl sm:text-3xl">Best performers</h2>
+                </div>
+              </div>
+              <div id="admin-top-products" class="mt-6 space-y-4"></div>
+            </article>
+          </div>
+        </section>
+
+        <section class="mt-3 grid items-start gap-4 xl:grid-cols-1">
+          <article class="section-surface">
+            <div class="section-head">
+              <div>
+                <p class="eyebrow">Alerts</p>
+                <h2 class="mt-2 text-2xl sm:text-3xl">Stock watch</h2>
+              </div>
+            </div>
+            <div id="admin-alerts" class="mt-6 space-y-4"></div>
+          </article>
+        </section>
+
+        <section class="mt-3 grid items-start gap-4 xl:grid-cols-[1.1fr_0.9fr]">
+          <article class="section-surface">
+            <div class="section-head">
+              <div>
+                <p class="eyebrow">Inventory</p>
+                <h2 class="mt-2 text-2xl sm:text-3xl">Latest products</h2>
+              </div>
+              <span id="inventory-status" class="pill">Live catalog</span>
+            </div>
+            <div id="admin-products" class="mt-6 space-y-4"></div>
+          </article>
+
+          <div class="space-y-4">
+            <article class="section-surface">
+              <div class="section-head">
+                <div>
+                  <p class="eyebrow">Performance</p>
+                  <h2 class="mt-2 text-2xl sm:text-3xl">Category mix</h2>
+                </div>
+              </div>
+              <div id="admin-performance" class="mt-6 space-y-4"></div>
+            </article>
+
+            <article class="section-surface">
+              <div class="section-head">
+                <div>
+                  <p class="eyebrow">Product editor</p>
+                  <h2 id="product-form-title" class="mt-2 text-2xl sm:text-3xl">Add product</h2>
+                </div>
+              </div>
+              <form id="product-form" class="mt-6 grid gap-4">
+                <input class="field" name="name" type="text" placeholder="Product name" required />
+                <div class="grid gap-4 sm:grid-cols-2">
+                  <input class="field" name="price" type="number" min="0" placeholder="Price" required />
+                  <input class="field" name="stock" type="number" min="0" placeholder="Stock" required />
+                </div>
+                <input class="field" name="category" type="text" placeholder="Category" required />
+                <input class="field" name="image" type="text" placeholder="/assets/images/products/example.webp" required />
+                <textarea class="field min-h-[140px] resize-none" name="description" placeholder="Product description" required></textarea>
+                <div class="flex flex-wrap gap-3">
+                  <button class="btn-primary" type="submit"><span id="product-submit-label">Add product</span></button>
+                  <button id="cancel-edit" class="btn-secondary hidden" type="button">Cancel edit</button>
+                </div>
+              </form>
+            </article>
+
+            <article class="section-surface">
+              <div class="section-head">
+                <div>
+                  <p class="eyebrow">Categories</p>
+                  <h2 class="mt-2 text-2xl sm:text-3xl">Catalog split</h2>
+                </div>
+              </div>
+              <div id="admin-categories" class="mt-6 space-y-4"></div>
+            </article>
+          </div>
+        </section>
+      </div>
+
+      <section
+        id="admin-order-modal"
+        class="fixed inset-0 z-[90] hidden items-center justify-center bg-[rgba(16,24,38,0.38)] px-4 py-6 backdrop-blur-sm"
+        aria-hidden="true"
+      >
+        <div class="max-h-[88vh] w-full max-w-4xl overflow-y-auto rounded-[30px] border border-[#ddd5c9] bg-[#fffaf4] p-4 shadow-[0_24px_64px_rgba(16,24,38,0.18)] sm:p-7">
+          <div class="flex items-start justify-between gap-4">
+            <div>
+              <p class="eyebrow">Order details</p>
+              <h2 class="mt-2 text-2xl sm:text-3xl">Recent checkout details</h2>
+            </div>
+            <button id="admin-order-modal-close" class="chip-link" type="button">Close</button>
+          </div>
+          <div id="admin-order-modal-body" class="mt-6"></div>
+        </div>
+      </section>
+    </main>
+    <div data-footer></div>
+    <script type="module" src="/assets/js/pages/admin.js"></script>
+  </body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Product details | ShopSphere</title>
+    <link rel="stylesheet" href="/assets/css/styles.css" />
+  </head>
+  <body>
+    <div data-header></div>
+    <main class="shell py-6 sm:py-10">
+      <div class="section-head">
+        <div>
+          <a class="chip-link" href="/home.html">Back to shop</a>
+          <h1 class="mt-4 text-3xl sm:text-5xl">Product</h1>
+        </div>
+        <div class="hidden gap-3 sm:flex">
+          <span class="ghost-tag">Cash on delivery</span>
+          <span class="ghost-tag">Fast delivery</span>
+        </div>
+      </div>
+      <p id="page-message" class="mt-5 hidden rounded-2xl px-4 py-3 text-sm"></p>
+      <section id="product-detail" class="promo-card mt-6 overflow-hidden"></section>
+      <section class="section-surface mt-10">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">You may also like</p>
+            <h2 class="mt-2 text-2xl sm:text-3xl">Similar products</h2>
+          </div>
+          <a class="chip-link w-full justify-center sm:w-auto" href="/home.html">View all</a>
+        </div>
+        <div id="similar-products" class="market-grid mt-6"></div>
+      </section>
+      <div class="h-24 sm:hidden"></div>
+    </main>
+    <div id="mobile-buy-bar" class="sm:hidden"></div>
+    <div data-footer></div>
+    <script type="module" src="/assets/js/pages/product.js"></script>
+  </body>
+</html>

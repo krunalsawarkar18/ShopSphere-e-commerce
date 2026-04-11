@@ -1,0 +1,14 @@
+{
+  "name": "shopsphere-frontend",
+  "version": "1.0.0",
+  "description": "Static frontend and Tailwind build for ShopSphere.",
+  "private": true,
+  "scripts": {
+    "start": "node server.js",
+    "build": "tailwindcss -i ./src/styles/input.css -o ./public/assets/css/styles.css --minify",
+    "dev": "tailwindcss -i ./src/styles/input.css -o ./public/assets/css/styles.css --watch"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.17"
+  }
+}

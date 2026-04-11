@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 700" fill="none">
+  <defs>
+    <linearGradient id="bg3" x1="0" y1="0" x2="1600" y2="700" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#EEF2FF"/>
+      <stop offset=".56" stop-color="#DBEAFE"/>
+      <stop offset="1" stop-color="#FDE68A"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="700" rx="36" fill="url(#bg3)"/>
+  <rect x="1040" y="120" width="360" height="458" rx="40" fill="#FFFFFF" fill-opacity=".8"/>
+  <rect x="1100" y="180" width="240" height="56" rx="18" fill="#2719FF"/>
+  <rect x="1100" y="270" width="240" height="28" rx="14" fill="#0F172A" fill-opacity=".12"/>
+  <rect x="1100" y="322" width="200" height="22" rx="11" fill="#0F172A" fill-opacity=".08"/>
+  <rect x="1100" y="386" width="240" height="28" rx="14" fill="#0F172A" fill-opacity=".12"/>
+  <rect x="1100" y="438" width="170" height="22" rx="11" fill="#0F172A" fill-opacity=".08"/>
+  <rect x="1100" y="506" width="200" height="50" rx="18" fill="#F97316"/>
+  <text x="1126" y="212" fill="#fff" font-family="Arial, sans-serif" font-size="28" font-weight="800">Fast Checkout</text>
+  <text x="170" y="184" fill="#2719FF" font-family="Arial, sans-serif" font-size="34" font-weight="700" letter-spacing="8">BEST VALUE</text>
+  <text x="170" y="292" fill="#0F172A" font-family="Arial, sans-serif" font-size="92" font-weight="800">Cart-ready offers</text>
+  <text x="170" y="360" fill="#475569" font-family="Arial, sans-serif" font-size="36" font-weight="600">Save more. Buy faster. Track every order.</text>
+  <rect x="170" y="432" width="248" height="84" rx="26" fill="#0F172A"/>
+  <text x="236" y="485" fill="#fff" font-family="Arial, sans-serif" font-size="34" font-weight="800">Shop Now</text>
+  <circle cx="742" cy="492" r="146" fill="#2719FF" fill-opacity=".12"/>
+  <circle cx="620" cy="572" r="76" fill="#F97316" fill-opacity=".18"/>
+</svg>

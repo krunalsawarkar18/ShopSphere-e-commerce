@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Your orders | ShopSphere</title>
+    <link rel="stylesheet" href="/assets/css/styles.css" />
+  </head>
+  <body>
+    <div data-header></div>
+    <main class="shell py-6 sm:py-10">
+      <section class="promo-card p-6 sm:p-8">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow" data-orders-eyebrow>Orders</p>
+            <h1 class="mt-2 text-3xl sm:text-5xl" data-orders-title>Your purchases</h1>
+          </div>
+          <a class="chip-link w-full justify-center sm:w-auto" href="/home.html">Shop more</a>
+        </div>
+      </section>
+      <p id="page-message" class="mb-5 mt-6 hidden rounded-2xl px-4 py-3 text-sm"></p>
+      <section id="orders-list" class="section-surface mt-6 space-y-5"></section>
+    </main>
+    <div data-footer></div>
+    <script type="module" src="/assets/js/pages/orders.js"></script>
+  </body>
+</html>

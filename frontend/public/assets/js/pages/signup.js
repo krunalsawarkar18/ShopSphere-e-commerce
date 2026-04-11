@@ -1,0 +1,39 @@
+import { request } from "../modules/api.js";
+import { clearMessage, showMessage } from "../modules/helpers.js";
+import { mountShell, refreshCartBadge } from "../modules/layout.js";
+import { saveSession } from "../modules/storage.js";
+import { syncCurrentUser } from "../modules/auth.js";
+
+mountShell("/signup.html");
+await syncCurrentUser();
+await refreshCartBadge();
+
+const form = document.querySelector("#signup-form");
+const message = document.querySelector("#form-message");
+
+form?.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  clearMessage(message);
+
+  const formData = new FormData(form);
+  const name = formData.get("name")?.toString().trim();
+  const email = formData.get("email")?.toString().trim();
+  const password = formData.get("password")?.toString().trim();
+
+  if (!password || password.length < 6) {
+    showMessage(message, "Password must be at least 6 characters long.");
+    return;
+  }
+
+  try {
+    const data = await request("/auth/signup", {
+      method: "POST",
+      body: { name, email, password }
+    });
+
+    saveSession(data.token, data.user);
+    window.location.href = "/home.html";
+  } catch (error) {
+    showMessage(message, error.message);
+  }
+});
