@@ -241,10 +241,4 @@ If you are a recruiter, hiring manager, or interviewer, this project is meant to
 - responsive execution
 - documentation quality
 
-## Additional Docs
 
-- [Project Handoff](docs/PROJECT-HANDOFF.md)
-
-## License
-
-MIT
