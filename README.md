@@ -143,7 +143,7 @@ Create:
 Example values:
 
 ```env
-PORT=5000
+PORT=5001
 FRONTEND_ORIGIN=http://localhost:3000
 MONGODB_URI=<your-private-mongodb-uri>
 MONGODB_DB_NAME=<your-database-name>

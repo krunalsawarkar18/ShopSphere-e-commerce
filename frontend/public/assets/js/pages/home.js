@@ -1,22 +1,56 @@
 import { request } from "../modules/api.js";
-import { clearMessage, formatCurrency, showMessage } from "../modules/helpers.js";
-import { mountShell, refreshCartBadge } from "../modules/layout.js";
-import { requireAuth, syncCurrentUser } from "../modules/auth.js";
+import { requireAuth } from "../modules/auth.js";
+import { bootstrapShell } from "../modules/bootstrap.js";
 import { getFavoriteIds, syncFavoriteButtons } from "../modules/favorites.js";
+import { clearMessage, formatCurrency, showMessage } from "../modules/helpers.js";
+import { refreshCartBadge } from "../modules/layout.js";
 
-mountShell("/home.html");
-await syncCurrentUser();
-await refreshCartBadge();
+bootstrapShell("/home.html");
+
+const PAGE_SIZE = 8;
 
 const productGrid = document.querySelector("#product-grid");
 const productCount = document.querySelector("#product-count");
+const productFeedStatus = document.querySelector("#product-feed-status");
+const productLoadTrigger = document.querySelector("#product-load-trigger");
 const searchForm = document.querySelector("#search-form");
 const searchInput = document.querySelector("#search-input");
 const categoryFilter = document.querySelector("#category-filter");
 const pageMessage = document.querySelector("#page-message");
 const params = new URLSearchParams(window.location.search);
 
-searchInput.value = params.get("search") || "";
+const state = {
+  products: [],
+  total: 0,
+  offset: 0,
+  hasMore: false,
+  isLoading: false,
+  favoritesOnly: params.get("favorites") === "1",
+  search: params.get("search") || "",
+  category: params.get("category") || "",
+  observer: null
+};
+
+searchInput.value = state.search;
+
+function buildProductQuery({ offset = 0, limit } = {}) {
+  const query = new URLSearchParams();
+
+  if (state.search) {
+    query.set("search", state.search);
+  }
+
+  if (state.category) {
+    query.set("category", state.category);
+  }
+
+  if (Number.isFinite(limit) && limit > 0) {
+    query.set("limit", String(limit));
+    query.set("offset", String(offset));
+  }
+
+  return query.toString();
+}
 
 async function loadCategories(selectedCategory) {
   const { categories } = await request("/products/categories");
@@ -32,8 +66,42 @@ async function loadCategories(selectedCategory) {
   `;
 }
 
+function getProductCountLabel() {
+  if (!state.total) {
+    return "0 products";
+  }
+
+  if (state.products.length >= state.total) {
+    return `${state.total} product${state.total === 1 ? "" : "s"}`;
+  }
+
+  return `${state.products.length} of ${state.total} products`;
+}
+
+function renderProductSkeletons(count = PAGE_SIZE) {
+  productCount.textContent = "Loading products...";
+  productGrid.innerHTML = Array.from({ length: count }, () => `
+      <article class="product-card product-card-skeleton p-4" aria-hidden="true">
+        <div class="product-image-wrap h-52 w-full sm:h-64"></div>
+        <div class="pt-4">
+          <div class="h-6 rounded-full" style="width: 82%; background: #ece4d8;"></div>
+          <div class="mt-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+            <div class="h-10 rounded-full" style="width: 7rem; background: #ece4d8;"></div>
+            <div class="h-10 w-full rounded-full sm:w-20" style="background: #ece4d8;"></div>
+          </div>
+          <div class="mt-3 h-4 w-full rounded-full" style="background: #efe7dc;"></div>
+          <div class="mt-2 h-4 rounded-full" style="width: 84%; background: #efe7dc;"></div>
+          <div class="mt-4 grid gap-2 sm:grid-cols-2">
+            <div class="h-10 rounded-full" style="background: #ece4d8;"></div>
+            <div class="h-10 rounded-full" style="background: #ece4d8;"></div>
+          </div>
+        </div>
+      </article>
+    `).join("");
+}
+
 function renderProducts(products, favoritesOnly = false) {
-  productCount.textContent = `${products.length} product${products.length === 1 ? "" : "s"}`;
+  productCount.textContent = getProductCountLabel();
 
   if (!products.length) {
     productGrid.innerHTML = `
@@ -50,7 +118,13 @@ function renderProducts(products, favoritesOnly = false) {
       (product) => `
         <article class="product-card p-4">
           <a class="product-image-wrap block" href="/product.html?id=${product.id}">
-            <img class="h-52 w-full object-cover sm:h-64" src="${product.image}" alt="${product.name}" />
+            <img
+              class="h-52 w-full object-cover sm:h-64"
+              src="${product.image}"
+              alt="${product.name}"
+              loading="lazy"
+              decoding="async"
+            />
             <div class="absolute inset-x-0 top-0 flex items-center justify-end p-4">
               <button class="flex h-11 w-11 items-center justify-center rounded-full border border-transparent bg-[#fffaf4]/92 text-slate shadow-soft transition hover:text-rose-500" type="button" aria-label="Add to favourites" data-favorite-button data-product-id="${product.id}">
                 <svg aria-hidden="true" viewBox="0 0 24 24" class="h-5 w-5 fill-none stroke-current" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
@@ -76,70 +150,167 @@ function renderProducts(products, favoritesOnly = false) {
     )
     .join("");
 
-  syncFavoriteButtons(document);
-
-  document.querySelectorAll("[data-add-cart-id]").forEach((button) => {
-    if (button.dataset.cartBound === "true") {
-      return;
-    }
-
-    button.dataset.cartBound = "true";
-    button.addEventListener("click", async () => {
-      clearMessage(pageMessage);
-
-      const user = await requireAuth();
-
-      if (!user) {
-        return;
-      }
-
-      const productId = button.getAttribute("data-add-cart-id");
-
-      try {
-        await request("/cart/items", {
-          method: "POST",
-          auth: true,
-          body: { productId, quantity: 1 }
-        });
-
-        showMessage(pageMessage, "Item added to cart.", "success");
-        await refreshCartBadge();
-      } catch (error) {
-        showMessage(pageMessage, error.message);
-      }
-    });
-  });
+  syncFavoriteButtons(productGrid);
 }
 
-async function loadProducts() {
+function updateLoadStatus() {
+  if (!productFeedStatus || !productLoadTrigger) {
+    return;
+  }
+
+  if (!state.products.length && state.isLoading) {
+    productFeedStatus.textContent = "Loading products...";
+    productLoadTrigger.classList.add("hidden");
+    return;
+  }
+
+  if (state.favoritesOnly || !state.products.length) {
+    productFeedStatus.textContent = "";
+    productLoadTrigger.classList.add("hidden");
+    return;
+  }
+
+  productLoadTrigger.classList.toggle("hidden", !state.hasMore);
+
+  if (state.isLoading) {
+    productFeedStatus.textContent = "Loading more products...";
+    return;
+  }
+
+  if (state.hasMore) {
+    productFeedStatus.textContent = "Scroll to load more products.";
+    return;
+  }
+
+  productFeedStatus.textContent = "All products loaded.";
+}
+
+function syncPagination(pagination, batchSize) {
+  if (state.favoritesOnly) {
+    state.offset = state.products.length;
+    state.hasMore = false;
+    state.total = state.products.length;
+    return;
+  }
+
+  state.offset += batchSize;
+  state.total = Number(pagination?.total ?? state.products.length);
+  state.hasMore = Boolean(pagination?.hasMore);
+}
+
+async function loadInitialProducts() {
   clearMessage(pageMessage);
-  const search = params.get("search") || "";
-  const category = params.get("category") || "";
-  const favoritesOnly = params.get("favorites") === "1";
+  state.products = [];
+  state.total = 0;
+  state.offset = 0;
+  state.hasMore = false;
+  state.isLoading = true;
+  renderProductSkeletons();
+  updateLoadStatus();
 
   try {
-    await loadCategories(category);
-    const query = new URLSearchParams();
+    const initialQuery = buildProductQuery({
+      offset: 0,
+      limit: state.favoritesOnly ? undefined : PAGE_SIZE
+    });
 
-    if (search) {
-      query.set("search", search);
-    }
+    const [{ products, pagination }] = await Promise.all([
+      request(`/products${initialQuery ? `?${initialQuery}` : ""}`),
+      loadCategories(state.category)
+    ]);
 
-    if (category) {
-      query.set("category", category);
-    }
-
-    const queryString = query.toString();
-    const { products } = await request(`/products${queryString ? `?${queryString}` : ""}`);
-    const visibleProducts = favoritesOnly
+    state.products = state.favoritesOnly
       ? products.filter((product) => getFavoriteIds().includes(String(product.id)))
       : products;
 
-    renderProducts(visibleProducts, favoritesOnly);
+    syncPagination(pagination, products.length);
+    renderProducts(state.products, state.favoritesOnly);
+    setupInfiniteLoading();
+  } catch (error) {
+    state.products = [];
+    state.total = 0;
+    state.hasMore = false;
+    productCount.textContent = "0 products";
+    productGrid.innerHTML = "";
+    showMessage(pageMessage, error.message);
+  } finally {
+    state.isLoading = false;
+    updateLoadStatus();
+  }
+}
+
+async function loadNextProducts() {
+  if (state.isLoading || state.favoritesOnly || !state.hasMore) {
+    return;
+  }
+
+  state.isLoading = true;
+  updateLoadStatus();
+
+  try {
+    const query = buildProductQuery({ offset: state.offset, limit: PAGE_SIZE });
+    const { products, pagination } = await request(`/products?${query}`);
+
+    state.products = [...state.products, ...products];
+    syncPagination(pagination, products.length);
+    renderProducts(state.products, state.favoritesOnly);
+  } catch (error) {
+    showMessage(pageMessage, error.message);
+  } finally {
+    state.isLoading = false;
+    updateLoadStatus();
+  }
+}
+
+function setupInfiniteLoading() {
+  state.observer?.disconnect();
+
+  if (state.favoritesOnly || !productLoadTrigger || !state.hasMore) {
+    return;
+  }
+
+  state.observer = new IntersectionObserver(
+    (entries) => {
+      if (entries.some((entry) => entry.isIntersecting)) {
+        loadNextProducts();
+      }
+    },
+    { rootMargin: "240px 0px" }
+  );
+
+  state.observer.observe(productLoadTrigger);
+}
+
+productGrid?.addEventListener("click", async (event) => {
+  const button = event.target.closest("[data-add-cart-id]");
+
+  if (!button) {
+    return;
+  }
+
+  clearMessage(pageMessage);
+
+  const user = await requireAuth();
+
+  if (!user) {
+    return;
+  }
+
+  const productId = button.getAttribute("data-add-cart-id");
+
+  try {
+    await request("/cart/items", {
+      method: "POST",
+      auth: true,
+      body: { productId, quantity: 1 }
+    });
+
+    showMessage(pageMessage, "Item added to cart.", "success");
+    await refreshCartBadge();
   } catch (error) {
     showMessage(pageMessage, error.message);
   }
-}
+});
 
 searchForm?.addEventListener("submit", (event) => {
   event.preventDefault();
@@ -169,9 +340,12 @@ categoryFilter?.addEventListener("change", () => {
 });
 
 window.addEventListener("favorites:changed", () => {
-  if (params.get("favorites") === "1") {
-    loadProducts();
+  if (state.favoritesOnly) {
+    loadInitialProducts();
+    return;
   }
+
+  syncFavoriteButtons(productGrid);
 });
 
-await loadProducts();
+await loadInitialProducts();

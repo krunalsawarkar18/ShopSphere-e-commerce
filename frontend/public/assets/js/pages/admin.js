@@ -1,12 +1,11 @@
 import { request } from "../modules/api.js";
-import { syncCurrentUser } from "../modules/auth.js";
+import { bootstrapShell } from "../modules/bootstrap.js";
 import { clearMessage, showMessage } from "../modules/helpers.js";
-import { mountShell, refreshCartBadge } from "../modules/layout.js";
+import { refreshCartBadge } from "../modules/layout.js";
 import { publishOrderSync, subscribeToOrderSync } from "../modules/order-sync.js";
 
-mountShell("/admin.html");
-const currentUser = await syncCurrentUser();
-await refreshCartBadge();
+const { userPromise } = bootstrapShell("/admin.html");
+const currentUser = await userPromise;
 
 const pageMessage = document.querySelector("#admin-message");
 const authGate = document.querySelector("#admin-auth-gate");

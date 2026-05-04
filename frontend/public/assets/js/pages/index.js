@@ -1,12 +1,9 @@
 import { request } from "../modules/api.js";
+import { bootstrapShell } from "../modules/bootstrap.js";
 import { formatCurrency, showMessage } from "../modules/helpers.js";
-import { mountShell, refreshCartBadge } from "../modules/layout.js";
-import { syncCurrentUser } from "../modules/auth.js";
 import { syncFavoriteButtons } from "../modules/favorites.js";
 
-mountShell("/index.html");
-await syncCurrentUser();
-await refreshCartBadge();
+bootstrapShell("/index.html");
 
 let bannerSlides = [
   {
@@ -285,9 +282,9 @@ function renderCategories(categories) {
 
 function renderProductCard(product) {
   return `
-    <article class="product-card p-3 sm:p-4">
+        <article class="product-card p-3 sm:p-4">
       <a class="product-image-wrap block" href="/product.html?id=${product.id}">
-        <img class="h-36 w-full object-cover sm:h-56" src="${product.image}" alt="${product.name}" />
+        <img class="h-36 w-full object-cover sm:h-56" src="${product.image}" alt="${product.name}" loading="lazy" decoding="async" />
         <button class="absolute right-3 top-3 flex h-10 w-10 items-center justify-center rounded-full border border-transparent bg-[#fffaf4]/92 text-slate shadow-soft transition hover:text-rose-500 sm:right-4 sm:top-4 sm:h-11 sm:w-11" type="button" aria-label="Add to favourites" data-favorite-button data-product-id="${product.id}">
           <svg aria-hidden="true" viewBox="0 0 24 24" class="h-5 w-5 fill-none stroke-current" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
             <path d="M12 20.5 4.8 13.8a4.7 4.7 0 0 1 6.64-6.64L12 7.72l.56-.56a4.7 4.7 0 1 1 6.64 6.64L12 20.5Z" />
@@ -329,7 +326,7 @@ function renderFreshCard(product) {
   return `
     <a class="dashboard-tile block" href="/product.html?id=${product.id}">
       <div class="product-image-wrap">
-        <img class="h-32 w-full object-cover sm:h-36" src="${product.image}" alt="${product.name}" />
+        <img class="h-32 w-full object-cover sm:h-36" src="${product.image}" alt="${product.name}" loading="lazy" decoding="async" />
       </div>
       <div class="mt-4 flex items-center justify-between gap-3">
         <p class="line-clamp-2 text-sm font-semibold text-ink">${product.name}</p>

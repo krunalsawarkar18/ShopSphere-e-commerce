@@ -1,6 +1,6 @@
 import { clearSession, getToken } from "./storage.js";
 
-const API_BASE = `${window.location.protocol}//${window.location.hostname}:5000/api`;
+const API_BASE = `${window.location.protocol}//${window.location.hostname}:5001/api`;
 
 export async function request(path, options = {}) {
   const {

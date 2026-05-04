@@ -354,18 +354,27 @@ async function verifyUserPassword(user, password) {
   return bcrypt.compare(password, passwordHash);
 }
 
-async function getProducts({ search = "", category = "" } = {}) {
+async function getProducts({ search = "", category = "", limit, offset = 0 } = {}) {
+  const normalizedOffset = Math.max(Number(offset) || 0, 0);
+  const normalizedLimit = Number.isFinite(Number(limit)) && Number(limit) > 0 ? Number(limit) : null;
+
   if (getDatabaseMode() === "local") {
     const data = readLocalStore();
     const normalizedSearch = search.trim().toLowerCase();
-
-    return data.products
+    const filteredProducts = data.products
       .filter((product) => {
         const matchesSearch = normalizedSearch ? product.name.toLowerCase().includes(normalizedSearch) : true;
         const matchesCategory = category ? product.category === category : true;
         return matchesSearch && matchesCategory;
       })
       .map(mapProduct);
+
+    return {
+      total: filteredProducts.length,
+      products: normalizedLimit === null
+        ? filteredProducts
+        : filteredProducts.slice(normalizedOffset, normalizedOffset + normalizedLimit)
+    };
   }
 
   const query = {};
@@ -378,8 +387,20 @@ async function getProducts({ search = "", category = "" } = {}) {
     query.category = category;
   }
 
-  const products = await Product.find(query).sort({ createdAt: -1 });
-  return products.map(mapProduct);
+  const productQuery = Product.find(query)
+    .sort({ createdAt: -1 })
+    .skip(normalizedOffset);
+
+  if (normalizedLimit !== null) {
+    productQuery.limit(normalizedLimit);
+  }
+
+  const [products, total] = await Promise.all([productQuery, Product.countDocuments(query)]);
+
+  return {
+    total,
+    products: products.map(mapProduct)
+  };
 }
 
 async function getCategories() {

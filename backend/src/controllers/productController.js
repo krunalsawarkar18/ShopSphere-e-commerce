@@ -9,9 +9,28 @@ const {
 } = require("../services/store");
 
 const getProducts = asyncHandler(async (req, res) => {
-  const { search = "", category = "" } = req.query;
-  const products = await loadProducts({ search, category });
-  return res.json({ products });
+  const { search = "", category = "", limit, offset } = req.query;
+  const parsedLimit = limit === undefined ? undefined : Number(limit);
+  const parsedOffset = offset === undefined ? 0 : Number(offset);
+  const { products, total } = await loadProducts({
+    search,
+    category,
+    limit: Number.isFinite(parsedLimit) && parsedLimit > 0 ? parsedLimit : undefined,
+    offset: Number.isFinite(parsedOffset) && parsedOffset > 0 ? parsedOffset : 0
+  });
+
+  const effectiveOffset = Number.isFinite(parsedOffset) && parsedOffset > 0 ? parsedOffset : 0;
+  const effectiveLimit = Number.isFinite(parsedLimit) && parsedLimit > 0 ? parsedLimit : products.length;
+
+  return res.json({
+    products,
+    pagination: {
+      total,
+      offset: effectiveOffset,
+      limit: effectiveLimit,
+      hasMore: effectiveOffset + products.length < total
+    }
+  });
 });
 
 const getProductById = asyncHandler(async (req, res) => {

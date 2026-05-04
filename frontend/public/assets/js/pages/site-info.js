@@ -1,6 +1,3 @@
-import { syncCurrentUser } from "../modules/auth.js";
-import { mountShell, refreshCartBadge } from "../modules/layout.js";
+import { bootstrapShell } from "../modules/bootstrap.js";
 
-mountShell("");
-await syncCurrentUser();
-await refreshCartBadge();
+bootstrapShell("");

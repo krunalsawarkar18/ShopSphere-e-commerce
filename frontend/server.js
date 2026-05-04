@@ -18,6 +18,18 @@ const contentTypes = {
   ".webp": "image/webp"
 };
 
+function getCacheControl(filePath) {
+  if (filePath.includes(`${path.sep}assets${path.sep}`)) {
+    return "public, max-age=86400";
+  }
+
+  if (path.extname(filePath).toLowerCase() === ".html") {
+    return "no-cache";
+  }
+
+  return "public, max-age=3600";
+}
+
 function resolveFilePath(requestUrl) {
   const parsedPath = new URL(requestUrl, `http://localhost:${port}`).pathname;
   const safePath = path.normalize(parsedPath).replace(/^(\.\.[/\\])+/, "");
@@ -46,16 +58,21 @@ const server = http.createServer((req, res) => {
   const ext = path.extname(filePath).toLowerCase();
   const contentType = contentTypes[ext] || "application/octet-stream";
 
-  fs.readFile(filePath, (error, content) => {
-    if (error) {
-      res.writeHead(500, { "Content-Type": "text/plain; charset=utf-8" });
-      res.end("Failed to load file");
-      return;
-    }
-
-    res.writeHead(200, { "Content-Type": contentType });
-    res.end(content);
+  res.writeHead(200, {
+    "Content-Type": contentType,
+    "Cache-Control": getCacheControl(filePath)
   });
+
+  const fileStream = fs.createReadStream(filePath);
+
+  fileStream.on("error", () => {
+    if (!res.headersSent) {
+      res.writeHead(500, { "Content-Type": "text/plain; charset=utf-8" });
+    }
+    res.end("Failed to load file");
+  });
+
+  fileStream.pipe(res);
 });
 
 server.listen(port, () => {

@@ -9,7 +9,7 @@ const orderRoutes = require("./routes/orderRoutes");
 const { notFound, errorHandler } = require("./middleware/errorMiddleware");
 
 const app = express();
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 5001;
 const frontendOrigin = process.env.FRONTEND_ORIGIN || "http://localhost:3000";
 
 app.use((req, res, next) => {
@@ -41,8 +41,21 @@ app.use(errorHandler);
 
 connectDatabase()
   .then((mode) => {
-    app.listen(port, () => {
+    const server = app.listen(port, () => {
       console.log(`Server running on http://localhost:${port} using ${mode} mode`);
+    });
+
+    server.on("error", (error) => {
+      if (error.code === "EADDRINUSE") {
+        console.error(
+          `Port ${port} is already in use. Another ShopSphere backend instance is probably already running.`
+        );
+        console.error(`Stop the existing process on port ${port}, or start this one with a different PORT value.`);
+        process.exit(1);
+      }
+
+      console.error("Failed to start server:", error.message);
+      process.exit(1);
     });
   })
   .catch((error) => {

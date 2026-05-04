@@ -1,11 +1,9 @@
 import { getQueryParam } from "../modules/helpers.js";
-import { mountShell, refreshCartBadge } from "../modules/layout.js";
-import { syncCurrentUser } from "../modules/auth.js";
+import { bootstrapShell } from "../modules/bootstrap.js";
+import { refreshCartBadge } from "../modules/layout.js";
 import { request } from "../modules/api.js";
 
-mountShell("");
-await syncCurrentUser();
-await refreshCartBadge();
+bootstrapShell("");
 
 const orderId = getQueryParam("orderId");
 const sessionId = getQueryParam("session_id");

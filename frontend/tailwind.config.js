@@ -14,8 +14,8 @@ module.exports = {
         panel: "#fffaf4"
       },
       fontFamily: {
-        heading: ['"Sora"', "sans-serif"],
-        body: ['"Manrope"', "sans-serif"]
+        heading: ['"Trebuchet MS"', '"Segoe UI Variable Display"', '"Segoe UI"', "sans-serif"],
+        body: ['"Segoe UI Variable Text"', '"Segoe UI"', '"Helvetica Neue"', "Arial", "sans-serif"]
       },
       boxShadow: {
         soft: "0 24px 70px rgba(16, 24, 38, 0.10)",

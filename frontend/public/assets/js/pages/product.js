@@ -1,17 +1,18 @@
 import { request } from "../modules/api.js";
-import { requireAuth, syncCurrentUser } from "../modules/auth.js";
+import { requireAuth } from "../modules/auth.js";
+import { bootstrapShell } from "../modules/bootstrap.js";
 import { clearMessage, formatCurrency, getQueryParam, showMessage } from "../modules/helpers.js";
-import { mountShell, refreshCartBadge } from "../modules/layout.js";
+import { refreshCartBadge } from "../modules/layout.js";
 
-mountShell("");
-const currentUser = await syncCurrentUser();
-await refreshCartBadge();
+const { userPromise } = bootstrapShell("");
 
 const detail = document.querySelector("#product-detail");
 const similarProducts = document.querySelector("#similar-products");
 const pageMessage = document.querySelector("#page-message");
 const mobileBuyBar = document.querySelector("#mobile-buy-bar");
 const productId = getQueryParam("id");
+
+let currentUser = null;
 
 function getProductMeta(product) {
   const seed = String(product.id)
@@ -101,12 +102,12 @@ function renderStars(rating) {
   const fullStars = Math.round(Number(rating));
   return Array.from({ length: 5 }, (_, index) =>
     index < fullStars
-      ? '<span class="text-[#f59e0b]">★</span>'
-      : '<span class="text-[#d1d5db]">★</span>'
+      ? '<span class="text-[#f59e0b]">&#9733;</span>'
+      : '<span class="text-[#d1d5db]">&#9733;</span>'
   ).join("");
 }
 
-async function addCurrentProductToCart(productId, quantity = 1) {
+async function addCurrentProductToCart(productIdToAdd, quantity = 1) {
   clearMessage(pageMessage);
 
   if (currentUser?.role === "admin") {
@@ -124,7 +125,7 @@ async function addCurrentProductToCart(productId, quantity = 1) {
     await request("/cart/items", {
       method: "POST",
       auth: true,
-      body: { productId, quantity }
+      body: { productId: productIdToAdd, quantity }
     });
 
     showMessage(pageMessage, "Item added to cart.", "success");
@@ -134,7 +135,7 @@ async function addCurrentProductToCart(productId, quantity = 1) {
   }
 }
 
-async function buyNow(productId, quantity = 1) {
+async function buyNow(productIdToAdd, quantity = 1) {
   if (currentUser?.role === "admin") {
     showMessage(pageMessage, "Admins can manage the store, but they cannot order products.");
     return;
@@ -150,7 +151,7 @@ async function buyNow(productId, quantity = 1) {
     await request("/cart/items", {
       method: "POST",
       auth: true,
-      body: { productId, quantity }
+      body: { productId: productIdToAdd, quantity }
     });
 
     await refreshCartBadge();
@@ -175,7 +176,7 @@ function renderSimilarProducts(products) {
       (product) => `
         <article class="product-card p-4">
           <a class="product-image-wrap block" href="/product.html?id=${product.id}">
-            <img class="h-44 w-full object-cover sm:h-56" src="${product.image}" alt="${product.name}" />
+            <img class="h-44 w-full object-cover sm:h-56" src="${product.image}" alt="${product.name}" loading="lazy" decoding="async" />
           </a>
           <div class="pt-4">
             <h3 class="line-clamp-2 text-lg leading-7">${product.name}</h3>
@@ -194,7 +195,9 @@ if (!productId) {
   showMessage(pageMessage, "Missing product ID.");
 } else {
   try {
-    const { product } = await request(`/products/${productId}`);
+    const [{ product }, user] = await Promise.all([request(`/products/${productId}`), userPromise]);
+    currentUser = user;
+
     const meta = getProductMeta(product);
     const details = getProductDetails(product);
     const { products } = await request(`/products?category=${encodeURIComponent(product.category)}`);

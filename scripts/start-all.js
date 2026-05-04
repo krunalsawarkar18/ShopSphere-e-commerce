@@ -81,7 +81,7 @@ async function main() {
   console.log("Starting ShopSphere frontend and backend...");
 
   const frontendUrl = "http://127.0.0.1:3000/";
-  const backendUrl = "http://127.0.0.1:5000/api/health";
+  const backendUrl = "http://127.0.0.1:5001/api/health";
   const [frontendAlreadyRunning, backendAlreadyRunning] = await Promise.all([
     probeUrl(frontendUrl),
     probeUrl(backendUrl)
@@ -103,7 +103,7 @@ async function main() {
   }
 
   if (backendAlreadyRunning) {
-    console.log("Backend already running on http://localhost:5000");
+    console.log("Backend already running on http://localhost:5001");
   } else {
     console.log("Launching backend...");
     startProcess("Backend", backendDir, ["start"]);
@@ -113,7 +113,7 @@ async function main() {
     await Promise.all([waitForUrl(frontendUrl), waitForUrl(backendUrl)]);
     console.log("ShopSphere is ready.");
     console.log("Frontend: http://localhost:3000");
-    console.log("Backend:  http://localhost:5000/api/health");
+    console.log("Backend:  http://localhost:5001/api/health");
   } catch (error) {
     console.warn(error.message);
   }

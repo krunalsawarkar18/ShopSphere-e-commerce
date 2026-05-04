@@ -1,12 +1,9 @@
 import { request } from "../modules/api.js";
+import { bootstrapShell } from "../modules/bootstrap.js";
 import { clearMessage, showMessage } from "../modules/helpers.js";
-import { mountShell, refreshCartBadge } from "../modules/layout.js";
 import { saveSession } from "../modules/storage.js";
-import { syncCurrentUser } from "../modules/auth.js";
 
-mountShell("");
-await syncCurrentUser();
-await refreshCartBadge();
+bootstrapShell("");
 
 const form = document.querySelector("#admin-signup-form");
 const message = document.querySelector("#form-message");
