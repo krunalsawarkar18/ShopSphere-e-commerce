@@ -1,6 +1,9 @@
 import { clearSession, getToken } from "./storage.js";
 
-const API_BASE = `${window.location.protocol}//${window.location.hostname}:5001/api`;
+const LOCAL_API_BASE = `${window.location.protocol}//${window.location.hostname}:5001/api`;
+const PRODUCTION_API_BASE = "https://shopsphere-e-commerce.onrender.com/api";
+const isLocalHost = ["localhost", "127.0.0.1"].includes(window.location.hostname);
+const API_BASE = isLocalHost ? LOCAL_API_BASE : PRODUCTION_API_BASE;
 
 export async function request(path, options = {}) {
   const {

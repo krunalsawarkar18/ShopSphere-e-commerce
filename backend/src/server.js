@@ -10,10 +10,30 @@ const { notFound, errorHandler } = require("./middleware/errorMiddleware");
 
 const app = express();
 const port = process.env.PORT || 5001;
-const frontendOrigin = process.env.FRONTEND_ORIGIN || "http://localhost:3000";
+const frontendOrigins = (process.env.FRONTEND_ORIGIN || "http://localhost:3000")
+  .split(",")
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+
+function resolveAllowedOrigin(requestOrigin) {
+  if (!requestOrigin) {
+    return frontendOrigins[0] || "*";
+  }
+
+  if (frontendOrigins.includes("*") || frontendOrigins.includes(requestOrigin)) {
+    return requestOrigin;
+  }
+
+  if (/^https:\/\/.+\.vercel\.app$/i.test(requestOrigin)) {
+    return requestOrigin;
+  }
+
+  return frontendOrigins[0] || "*";
+}
 
 app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", frontendOrigin);
+  res.header("Access-Control-Allow-Origin", resolveAllowedOrigin(req.headers.origin));
+  res.header("Vary", "Origin");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
   res.header("Access-Control-Allow-Methods", "GET,POST,PATCH,DELETE,OPTIONS");
 
